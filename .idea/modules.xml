@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RouteAnalyzer.iml" filepath="$PROJECT_DIR$/RouteAnalyzer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RouteAnalyzer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/RouteAnalyzer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/RouteAnalyzer.test.iml" filepath="$PROJECT_DIR$/.idea/modules/RouteAnalyzer.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lab1-g03.iml" filepath="$PROJECT_DIR$/.idea/lab1-g03.iml" />
     </modules>
   </component>
