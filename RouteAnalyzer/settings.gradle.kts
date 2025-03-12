@@ -1,5 +1,8 @@
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+pluginManagement {
+    repositories {
+        gradlePluginPortal() // ✅ This is where the plugin portal belongs!
+        mavenCentral()
+    }
 }
-rootProject.name = "RouteAnalyzer"
 
+rootProject.name = "RouteAnalyzer"
