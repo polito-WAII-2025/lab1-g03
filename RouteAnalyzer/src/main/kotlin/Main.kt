@@ -66,19 +66,23 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double, earthRadiu
     return earthRadiusKm * c
 }
 
-fun maxDistanceFromStart(waypoints: List<Waypoint>, params: CustomParameters): Double {
-    if (waypoints.isEmpty()) return 0.0
+fun maxDistanceWaypoint(waypoints: List<Waypoint>, params: CustomParameters): Pair<Waypoint, Double> {
+    if (waypoints.isEmpty()) return Pair(waypoints.first(), 0.0) // or return null, depending on your needs
+
     val start = waypoints.first()
-    return waypoints.maxOf { haversine(start.latitude, start.longitude, it.latitude, it.longitude,params.earthRadiusKm) }
+    val maxWaypoint = waypoints.maxByOrNull { haversine(start.latitude, start.longitude, it.latitude, it.longitude, params.earthRadiusKm) }
+    val maxDistance = haversine(start.latitude, start.longitude, maxWaypoint!!.latitude, maxWaypoint.longitude, params.earthRadiusKm)
+
+    return Pair(maxWaypoint, maxDistance)
 }
+
 fun main( ) {
     val waypoints = readWaypointsFromCsv("evaluation/waypoints.csv")
     val params = readCustomParameters("evaluation/custom-parameters.yml")
 
     if (waypoints.isNotEmpty() && params != null) {
-        val maxDistance = maxDistanceFromStart(waypoints, params)
-        println("Farthest distance from the start point: ${"%.2f".format(maxDistance)} km")
-        //println("I read it:  ${waypoints.first()}")
+        val (maxWaypoint, maxDistance) = maxDistanceWaypoint(waypoints, params)
+        println("Max Distance: $maxDistance km, Max Waypoint: $maxWaypoint")
     } else {
         println("No valid waypoints found.")
     }
