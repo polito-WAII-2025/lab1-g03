@@ -6,6 +6,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RouteAnalyzer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/RouteAnalyzer.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/RouteAnalyzer.test.iml" filepath="$PROJECT_DIR$/.idea/modules/RouteAnalyzer.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/lab1-g03.iml" filepath="$PROJECT_DIR$/.idea/lab1-g03.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.example.RouteAnalyzer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/org.example.RouteAnalyzer.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/org.example.RouteAnalyzer.test.iml" filepath="$PROJECT_DIR$/.idea/modules/org.example.RouteAnalyzer.test.iml" />
     </modules>
   </component>
 </project>
