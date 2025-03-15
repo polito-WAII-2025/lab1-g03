@@ -4,7 +4,7 @@ import java.io.File
 import java.io.FileInputStream
 import kotlin.math.*
 
-data class Waypoint( val timestamp: String, val latitude: Double, val longitude: Double )
+data class Waypoint( val timestamp: Double, val latitude: Double, val longitude: Double )
 
 data class CustomParameters(
     val earthRadiusKm: Double,
@@ -20,10 +20,10 @@ fun readWaypointsFromCsv(filePath: String): List<Waypoint> {
         lines.forEach { line ->  // Skip header
             val parts = line.split(";")
             if (parts.size >= 3) {
-                val timestamp = parts[0]
+                val timestamp = parts[0].toDoubleOrNull()
                 val latitude = parts[1].toDoubleOrNull()
                 val longitude = parts[2].toDoubleOrNull()
-                if (latitude != null && longitude != null) {
+                if (latitude != null && longitude != null && timestamp != null) {
                     waypoints.add(Waypoint(timestamp, latitude, longitude))
                 }
             }
@@ -66,7 +66,7 @@ fun haversine(lat1: Double, lon1: Double, lat2: Double, lon2: Double, earthRadiu
     return earthRadiusKm * c
 }
 
-fun maxDistanceWaypoint(waypoints: List<Waypoint>, params: CustomParameters): Pair<Waypoint, Double> {
+fun maxDistanceFromStart(waypoints: List<Waypoint>, params: CustomParameters): Pair<Waypoint, Double> {
     if (waypoints.isEmpty()) return Pair(waypoints.first(), 0.0) // or return null, depending on your needs
 
     val start = waypoints.first()
@@ -76,13 +76,27 @@ fun maxDistanceWaypoint(waypoints: List<Waypoint>, params: CustomParameters): Pa
     return Pair(maxWaypoint, maxDistance)
 }
 
+fun waypointsOutsideGeofence(waypoints: List<Waypoint>, centerLat: Double, centerLon: Double, radiusKm: Double, earthRadiusKm: Double): List<Waypoint> {
+    return waypoints.filter {
+        // Calculate the distance between the waypoint and the center of the geo-fence
+        val distance = haversine(centerLat, centerLon, it.latitude, it.longitude, earthRadiusKm)
+        distance > radiusKm // If the distance is greater than the radius, it's outside the geo-fence
+    }
+}
+
 fun main( ) {
     val waypoints = readWaypointsFromCsv("evaluation/waypoints.csv")
     val params = readCustomParameters("evaluation/custom-parameters.yml")
 
     if (waypoints.isNotEmpty() && params != null) {
-        val (maxWaypoint, maxDistance) = maxDistanceWaypoint(waypoints, params)
+        val (maxWaypoint, maxDistance) = maxDistanceFromStart(waypoints, params)
         println("Max Distance: $maxDistance km, Max Waypoint: $maxWaypoint")
+
+        val centralWaypoint = Waypoint(0.0, params.geofenceCenterLatitude, params.geofenceCenterLongitude)
+        val waypointsOutside = waypointsOutsideGeofence(waypoints, centralWaypoint.latitude, centralWaypoint.longitude, params.geofenceRadiusKm, params.earthRadiusKm)
+        println("Number of waypoints outside the geo-fence: ${waypointsOutside.size}")
+        println("Waypoints outside the geo-fence: $waypointsOutside")
+
     } else {
         println("No valid waypoints found.")
     }
