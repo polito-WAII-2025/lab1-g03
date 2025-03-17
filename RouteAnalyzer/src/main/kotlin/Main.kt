@@ -184,6 +184,7 @@ fun radiusToResolution(radiusKm: Double): Int =
         else -> throw IllegalArgumentException("Radius too small for any H3 resolution: $radiusKm km")
     }
 
+// single json instance for better performance
 val json = Json { prettyPrint = true }
 
 fun main() {

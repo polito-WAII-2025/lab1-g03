@@ -9,24 +9,18 @@ else
   echo "🔎 Running ktlintFormat on staged files:"
   echo "$STAGED_FILES"
 
-  # Move into the RouteAnalyzer directory
-  cd RouteAnalyzer || exit
-
   # Run ktlintFormat only on staged files
-  echo "$STAGED_FILES" | xargs -I {} ./gradlew ktlintFormat -Pfiles={}
+  echo "$STAGED_FILES" | xargs -I {} ./RouteAnalyzer/gradlew -p RouteAnalyzer ktlintFormat -Pfiles={}
 
-  # Re-stage only the modified files after formatting (from root)
+  # Re-stage only the modified files after formatting
   echo "$STAGED_FILES" | xargs -I {} git add {}
 
   # Run ktlint check (on all staged files)
-  ./gradlew ktlintCheck
+  ./RouteAnalyzer/gradlew -p RouteAnalyzer ktlintCheck
   if [ $? -ne 0 ]; then
     echo "❌ Ktlint check failed. Fix the issues before committing."
     exit 1
   fi
-
-  # Go back to root directory
-  cd ..
 fi
 
 # Check for non-ASCII file names (same logic as before)
