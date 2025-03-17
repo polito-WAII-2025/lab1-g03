@@ -163,6 +163,7 @@ fun waypointsOutsideGeofence(
     }
 
 fun radiusToResolution(radiusKm: Double): Int =
+    // translate radius to uber h3 resolution
     when {
         radiusKm >= 11070.0 -> 0
         radiusKm >= 4184.0 -> 1
