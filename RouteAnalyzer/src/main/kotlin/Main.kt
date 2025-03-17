@@ -44,6 +44,16 @@ data class Output(
     val waypointsOutsideGeofence: WaypointsOutsideGeofence,
 )
 
+@Serializable
+data class advancedOutput( val maxDistanceFromStart: MaxDistanceFromStart,
+    //ideas for the output_advanced.json file
+    // avg speed
+    // most visited routes
+    // peak travel hours ( search in which hours did it travel more )
+    // time outside geofence area
+    // frequent crossing ( find areas that it crossed multiple times )
+)
+
 data class CustomParameters(
     val earthRadiusKm: Double,
     val geofenceCenterLatitude: Double,

@@ -16,6 +16,8 @@ dependencies {
     implementation("org.yaml:snakeyaml:2.0")
     implementation("com.uber:h3:3.7.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 tasks.test {
