@@ -163,7 +163,6 @@ fun waypointsOutsideGeofence(
     }
 
 fun radiusToResolution(radiusKm: Double): Int =
-    // we could want to adjust the resolution values to fit our needs
     when {
         radiusKm >= 11070.0 -> 0
         radiusKm >= 4184.0 -> 1
