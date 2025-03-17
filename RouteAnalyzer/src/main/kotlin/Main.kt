@@ -114,7 +114,7 @@ fun maxDistanceFromStart(
     waypoints: List<Waypoint>,
     params: CustomParameters,
 ): Pair<Waypoint, Double> {
-    if (waypoints.isEmpty()) return Pair(waypoints.first(), 0.0) // or return null, depending on your needs
+    if (waypoints.isEmpty()) return Pair(waypoints.first(), 0.0)
 
     val start = waypoints.first()
     val maxWaypoint = waypoints.maxByOrNull { haversine(start.latitude, start.longitude, it.latitude, it.longitude, params.earthRadiusKm) }
