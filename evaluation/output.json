@@ -9,12 +9,12 @@
     },
     "mostFrequentedArea": {
         "centralWaypoint": {
-            "timestamp": 1.7413579398477842E12,
-            "latitude": 45.06321,
-            "longitude": 7.65902
+            "timestamp": 1.7413579411244749E12,
+            "latitude": 45.09191,
+            "longitude": 7.69362
         },
         "areaRadiusKm": 0.5,
-        "entriesCount": 2
+        "entriesCount": 3
     },
     "waypointsOutsideGeofence": {
         "centralWaypoint": {

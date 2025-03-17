@@ -162,20 +162,26 @@ fun waypointsOutsideGeofence(
         distance > radiusKm // If the distance is greater than the radius, it's outside the geo-fence
     }
 
-fun radiusToResolution(radiusKm: Double): Int {
-    // This is a simplified example. You may need to adjust the logic based on your specific requirements.
-    return when {
-        radiusKm < 0.1 -> 15
-        radiusKm < 0.5 -> 14
-        radiusKm < 1 -> 13
-        radiusKm < 5 -> 12
-        radiusKm < 10 -> 11
-        radiusKm < 50 -> 10
-        radiusKm < 100 -> 9
-        radiusKm < 500 -> 8
-        else -> 7
+fun radiusToResolution(radiusKm: Double): Int =
+    when {
+        radiusKm >= 11070.0 -> 0
+        radiusKm >= 4184.0 -> 1
+        radiusKm >= 1582.0 -> 2
+        radiusKm >= 597.5 -> 3
+        radiusKm >= 224.2 -> 4
+        radiusKm >= 84.21 -> 5
+        radiusKm >= 31.5 -> 6
+        radiusKm >= 11.8 -> 7
+        radiusKm >= 4.4 -> 8
+        radiusKm >= 1.65 -> 9
+        radiusKm >= 0.62 -> 10
+        radiusKm >= 0.23 -> 11
+        radiusKm >= 0.087 -> 12
+        radiusKm >= 0.033 -> 13
+        radiusKm >= 0.012 -> 14
+        radiusKm >= 0.004 -> 15
+        else -> throw IllegalArgumentException("Radius too small for any H3 resolution: $radiusKm km")
     }
-}
 
 val json = Json { prettyPrint = true }
 
