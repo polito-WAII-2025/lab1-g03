@@ -45,7 +45,7 @@ data class Output(
 )
 
 @Serializable
-data class advancedOutput( val maxDistanceFromStart: MaxDistanceFromStart,
+data class advancedOutput(val maxDistanceFromStart: MaxDistanceFromStart,
     //ideas for the output_advanced.json file
     // avg speed
     // most visited routes
