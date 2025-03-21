@@ -89,6 +89,7 @@ fun mostFrequentedArea(
     }
 
     val mostFrequentedH3Index = frequencyMap.maxByOrNull { it.value }?.key
+    println("Most Frequent H3 Index: $mostFrequentedH3Index")
 
     val mostFrequentedWaypoints =
         waypoints.filter { waypoint ->

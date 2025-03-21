@@ -19,6 +19,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    testImplementation("org.assertj:assertj-core:3.24.2")
 }
 
 tasks.test {
