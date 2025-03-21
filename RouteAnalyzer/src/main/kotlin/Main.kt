@@ -9,14 +9,14 @@ import java.io.File
 import java.io.FileInputStream
 import kotlin.math.*
 
-@Serializable
+/*@Serializable
 data class Waypoint(
     val timestamp: Double,
     val latitude: Double,
     val longitude: Double,
-)
+)*/
 
-@Serializable
+/*@Serializable
 data class MaxDistanceFromStart(
     val waypoint: Waypoint,
     val distanceKm: Double,
@@ -42,7 +42,7 @@ data class Output(
     val maxDistanceFromStart: MaxDistanceFromStart,
     val mostFrequentedArea: MostFrequentedArea,
     val waypointsOutsideGeofence: WaypointsOutsideGeofence,
-)
+)*/
 
 @Serializable
 data class advancedOutput(val maxDistanceFromStart: MaxDistanceFromStart,
@@ -54,15 +54,15 @@ data class advancedOutput(val maxDistanceFromStart: MaxDistanceFromStart,
     // frequent crossing ( find areas that it crossed multiple times )
 )
 
-data class CustomParameters(
+/*data class CustomParameters(
     val earthRadiusKm: Double,
     val geofenceCenterLatitude: Double,
     val geofenceCenterLongitude: Double,
     val geofenceRadiusKm: Double,
     val mostFrequentedAreaRadiusKm: Double? = null, // Optional field
-)
+)*/
 
-fun readWaypointsFromCsv(filePath: String): List<Waypoint> {
+/*fun readWaypointsFromCsv(filePath: String): List<Waypoint> {
     val waypoints = mutableListOf<Waypoint>()
     File(filePath).useLines { lines ->
         lines.forEach { line ->
@@ -100,9 +100,9 @@ fun readCustomParameters(filePath: String): CustomParameters? {
             mostFrequentedAreaRadiusKm = (data["mostFrequentedAreaRadiusKm"] as Number?)?.toDouble(),
         )
     }
-}
+}*/
 
-fun haversine(
+/*fun haversine(
     lat1: Double,
     lon1: Double,
     lat2: Double,
@@ -118,9 +118,9 @@ fun haversine(
     val a = sin(dLat / 2).pow(2) + cos(lat1Radians) * cos(lat2Radians) * sin(dLon / 2).pow(2)
     val c = 2 * atan2(sqrt(a), sqrt(1 - a))
     return earthRadiusKm * c
-}
+}*/
 
-fun maxDistanceFromStart(
+/*fun maxDistanceFromStart(
     waypoints: List<Waypoint>,
     params: CustomParameters,
 ): Pair<Waypoint, Double> {
@@ -193,6 +193,7 @@ fun radiusToResolution(radiusKm: Double): Int =
         radiusKm >= 0.004 -> 15
         else -> throw IllegalArgumentException("Radius too small for any H3 resolution: $radiusKm km")
     }
+*/
 
 // single json instance for better performance
 val json = Json { prettyPrint = true }
