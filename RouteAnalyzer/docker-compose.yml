@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  app:
+    build: ./
+    container_name: route-analyzer
+    volumes:
+      - ../evaluation:/app/evaluation
+    ports:
+      - 8080:8080
+    expose:
+      - 8080

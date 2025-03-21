@@ -1,6 +1,13 @@
-version: "3"
+version: '3.8'
+
 services:
-  frontend:
-    image: my-vite-app
+  routeanalyzer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: routeanalyzer:latest
+    volumes:
+      - ../evaluation:/app/evaluation
     ports:
-      - "8080:80"
+      - "8080:8080"
+    entrypoint: ["java", "-jar", "/app/app.jar"]
