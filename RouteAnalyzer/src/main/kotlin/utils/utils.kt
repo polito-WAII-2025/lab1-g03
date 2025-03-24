@@ -1,10 +1,14 @@
-package org.example
+@file:Suppress("ktlint:standard:filename", "ktlint:standard:no-wildcard-imports")
 
-import kotlin.math.*
+package org.example.utils
+
+import com.uber.h3core.H3Core
+import org.example.CustomParameters
+import org.example.Waypoint
 import org.yaml.snakeyaml.Yaml
 import java.io.File
 import java.io.FileInputStream
-import com.uber.h3core.H3Core
+import kotlin.math.*
 
 fun haversine(
     lat1: Double,

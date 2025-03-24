@@ -3,6 +3,7 @@
 import com.uber.h3core.H3Core
 import org.assertj.core.api.Assertions.assertThat
 import org.example.*
+import org.example.utils.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -207,5 +208,43 @@ class MyTest {
 
         val (frequentedWaypoints, _) = mostFrequentedArea(spreadWaypoints, 9)
         assertThat(frequentedWaypoints.size).isLessThan(3)
+    }
+
+    @Test
+    fun `test malformed CSV`() {
+        val tempFile =
+            File.createTempFile("waypoints", ".csv").apply {
+                writeText("invalid,data,here\n1.0;37.7749;INVALID\n;;\n1.0;37.7749;-122.4194")
+            }
+
+        val waypoints = readWaypointsFromCsv(tempFile.absolutePath)
+        assertEquals(1, waypoints.size, "Only one valid waypoint should be parsed")
+    }
+
+    @Test
+    fun `test geofence boundary precision`() {
+        val boundaryPoint = Waypoint(1.0, 37.7749, -122.4194 + (50.0 / 111.0))
+        val result = waypointsOutsideGeofence(listOf(boundaryPoint), 37.7749, -122.4194, 50.0, 6371.0)
+
+        assertThat(result).isEmpty() // Should be considered within the geofence
+    }
+
+    @Test
+    fun `test H3 resolution boundaries`() {
+        assertEquals(0, radiusToResolution(11070.0), "Incorrect resolution for large radius")
+        assertEquals(15, radiusToResolution(0.004), "Incorrect resolution for smallest valid radius")
+    }
+
+    @Test
+    fun `test large dataset performance`() {
+        val largeWaypoints =
+            (1..100_000).map {
+                Waypoint(it.toDouble(), 37.7749 + it * 0.00001, -122.4194 + it * 0.00001)
+            }
+
+        val (farthestWaypoint, distance) = maxDistanceFromStart(largeWaypoints, params)
+
+        assertNotNull(farthestWaypoint, "Farthest waypoint should not be null for large dataset")
+        assertTrue(distance > 0, "Distance should be positive")
     }
 }
