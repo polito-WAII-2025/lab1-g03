@@ -1,14 +1,15 @@
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.BeforeEach
+@file:Suppress("ktlint:standard:filename", "ktlint:standard:no-wildcard-imports")
+
+import com.uber.h3core.H3Core
+import org.assertj.core.api.Assertions.assertThat
 import org.example.*
 import org.junit.jupiter.api.Assertions.*
-import org.assertj.core.api.Assertions.assertThat
-import kotlin.math.round
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import java.io.File
-import com.uber.h3core.H3Core
+import kotlin.math.round
 
 class MyTest {
-
     private lateinit var waypoints: List<Waypoint>
     private lateinit var params: CustomParameters
 
@@ -20,19 +21,21 @@ class MyTest {
     @BeforeEach
     fun setup() {
         // Sample waypoints
-        waypoints = listOf(
-            Waypoint(1.0, 37.7749, -122.4194),  // San Francisco
-            Waypoint(2.0, 34.0522, -118.2437),  // Los Angeles
-            Waypoint(3.0, 40.7128, -74.0060),   // New York
-        )
+        waypoints =
+            listOf(
+                Waypoint(1.0, 37.7749, -122.4194), // San Francisco
+                Waypoint(2.0, 34.0522, -118.2437), // Los Angeles
+                Waypoint(3.0, 40.7128, -74.0060), // New York
+            )
 
-        params = CustomParameters(
-            earthRadiusKm = 6371.0,
-            geofenceCenterLatitude = 37.7749,
-            geofenceCenterLongitude = -122.4194,
-            geofenceRadiusKm = 50.0,
-            mostFrequentedAreaRadiusKm = 10.0
-        )
+        params =
+            CustomParameters(
+                earthRadiusKm = 6371.0,
+                geofenceCenterLatitude = 37.7749,
+                geofenceCenterLongitude = -122.4194,
+                geofenceRadiusKm = 50.0,
+                mostFrequentedAreaRadiusKm = 10.0,
+            )
     }
 
     @Test
@@ -57,9 +60,10 @@ class MyTest {
 
     @Test
     fun `test readWaypointsFromCsv`() {
-        val tempFile = File.createTempFile("waypoints", ".csv").apply {
-            writeText("1.0;37.7749;-122.4194\n2.0;34.0522;-118.2437")
-        }
+        val tempFile =
+            File.createTempFile("waypoints", ".csv").apply {
+                writeText("1.0;37.7749;-122.4194\n2.0;34.0522;-118.2437")
+            }
 
         val waypoints = readWaypointsFromCsv(tempFile.absolutePath)
         assertEquals(2, waypoints.size, "Waypoints count mismatch")
@@ -68,15 +72,18 @@ class MyTest {
 
     @Test
     fun `test readCustomParameters`() {
-        val tempFile = File.createTempFile("config", ".yaml").apply {
-            writeText("""
-                earthRadiusKm: 6371.0
-                geofenceCenterLatitude: 37.7749
-                geofenceCenterLongitude: -122.4194
-                geofenceRadiusKm: 50.0
-                mostFrequentedAreaRadiusKm: 10.0
-            """.trimIndent())
-        }
+        val tempFile =
+            File.createTempFile("config", ".yaml").apply {
+                writeText(
+                    """
+                    earthRadiusKm: 6371.0
+                    geofenceCenterLatitude: 37.7749
+                    geofenceCenterLongitude: -122.4194
+                    geofenceRadiusKm: 50.0
+                    mostFrequentedAreaRadiusKm: 10.0
+                    """.trimIndent(),
+                )
+            }
 
         val params = readCustomParameters(tempFile.absolutePath)
         assertNotNull(params, "Parameters should not be null")
@@ -112,10 +119,11 @@ class MyTest {
 
     @Test
     fun `maxDistanceFromStart nearby points`() {
-        val waypoints = listOf(
-            Waypoint(1.0, 37.7749, -122.4194),
-            Waypoint(2.0, 37.7750, -122.4195)  // A very close point
-        )
+        val waypoints =
+            listOf(
+                Waypoint(1.0, 37.7749, -122.4194),
+                Waypoint(2.0, 37.7750, -122.4195), // A very close point
+            )
         val (_, distance) = maxDistanceFromStart(waypoints, params)
 
         assertTrue(distance < 1.0, "Distance should be very small")
@@ -123,10 +131,11 @@ class MyTest {
 
     @Test
     fun `waypointsOutsideGeofence all inside`() {
-        val insideWaypoints = listOf(
-            Waypoint(1.0, 37.7749, -122.4194),
-            Waypoint(2.0, 37.7750, -122.4195)
-        )
+        val insideWaypoints =
+            listOf(
+                Waypoint(1.0, 37.7749, -122.4194),
+                Waypoint(2.0, 37.7750, -122.4195),
+            )
 
         val result = waypointsOutsideGeofence(insideWaypoints, 37.7749, -122.4194, 100.0, 6371.0)
         assertThat(result).isEmpty()
@@ -134,10 +143,11 @@ class MyTest {
 
     @Test
     fun `waypointsOutsideGeofence all outside`() {
-        val outsideWaypoints = listOf(
-            Waypoint(1.0, 34.0522, -118.2437),
-            Waypoint(2.0, 40.7128, -74.0060)
-        )
+        val outsideWaypoints =
+            listOf(
+                Waypoint(1.0, 34.0522, -118.2437),
+                Waypoint(2.0, 40.7128, -74.0060),
+            )
 
         val result = waypointsOutsideGeofence(outsideWaypoints, 37.7749, -122.4194, 50.0, 6371.0)
         assertThat(result).hasSize(2)
@@ -158,19 +168,21 @@ class MyTest {
 
     @Test
     fun `radiusToResolution too small radius`() {
-        val exception = assertThrows(IllegalArgumentException::class.java) {
-            radiusToResolution(0.001)
-        }
+        val exception =
+            assertThrows(IllegalArgumentException::class.java) {
+                radiusToResolution(0.001)
+            }
         assertTrue(exception.message!!.contains("Radius too small"))
     }
 
     @Test
     fun `mostFrequentedArea single H3 cell`() {
-        val closeWaypoints = listOf(
-            Waypoint(1.0, 37.7749, -122.4194),
-            Waypoint(2.0, 37.7750, -122.4195),
-            Waypoint(3.0, 37.7751, -122.4196)
-        )
+        val closeWaypoints =
+            listOf(
+                Waypoint(1.0, 37.7749, -122.4194),
+                Waypoint(2.0, 37.7750, -122.4195),
+                Waypoint(3.0, 37.7751, -122.4196),
+            )
 
         val h3 = H3Core.newInstance()
         closeWaypoints.forEach { wp ->
@@ -184,17 +196,16 @@ class MyTest {
         assertEquals(3, count, "All waypoints should belong to the same H3 cell")
     }
 
-
     @Test
     fun `mostFrequentedArea multiple cells`() {
-        val spreadWaypoints = listOf(
-            Waypoint(1.0, 37.7749, -122.4194), // SF
-            Waypoint(2.0, 34.0522, -118.2437), // LA
-            Waypoint(3.0, 40.7128, -74.0060)   // NY
-        )
+        val spreadWaypoints =
+            listOf(
+                Waypoint(1.0, 37.7749, -122.4194), // SF
+                Waypoint(2.0, 34.0522, -118.2437), // LA
+                Waypoint(3.0, 40.7128, -74.0060), // NY
+            )
 
-        val (frequentedWaypoints, count) = mostFrequentedArea(spreadWaypoints, 9)
+        val (frequentedWaypoints, _) = mostFrequentedArea(spreadWaypoints, 9)
         assertThat(frequentedWaypoints.size).isLessThan(3)
     }
-
 }
